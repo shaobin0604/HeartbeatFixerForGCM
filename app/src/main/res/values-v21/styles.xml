@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme" parent="FrameworkRoot.Theme" /> <!-- doesn't contain the pre-L code from the values/styles.xml -->
+
+    <style name="Theme.IOSched" parent="Theme.IOSched.Base">
+        <item name="popupItemBackground">@drawable/popup_item_background</item>
+        <item name="photoItemForeground">@drawable/photo_item_foreground</item>
+        <item name="photoItemForegroundBorderless">@drawable/photo_item_foreground_borderless</item>
+
+        <item name="android:navigationBarColor">#000</item>
+        <item name="android:statusBarColor">?colorPrimaryDark</item>
+
+        <item name="android:alertDialogTheme">@style/Theme.IOSched.AlertDialog</item>
+    </style>
+
+    <style name="Theme.IOSched.WithNavDrawer" parent="Theme.IOSched">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.IOSched.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/theme_primary</item>
+        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="android:colorAccent">@color/theme_accent_2</item>
+    </style>
+
+    <style name="Widget.IOSched.HeaderBar.Spinner" parent="Widget.IOSched.HeaderBar.Spinner.Base">
+        <item name="android:theme">@style/ActionBarThemeOverlay</item>
+    </style>
+
+    <style name="TabIndicator">
+        <item name="android:theme">@style/ActionBarThemeOverlay</item>
+    </style>
+</resources>
