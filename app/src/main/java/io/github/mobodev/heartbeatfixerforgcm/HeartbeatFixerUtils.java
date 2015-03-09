@@ -1,5 +1,6 @@
 package io.github.mobodev.heartbeatfixerforgcm;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
+
+import io.github.mobodev.heartbeatfixerforgcm.utils.AndroidVersionUtils;
 
 /**
  * Created by shaobin on 3/8/15.
@@ -38,12 +41,13 @@ public class HeartbeatFixerUtils {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private static void setNextHeartbeatRequest(Context context, int intervalMillis) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         long triggerAtMillis = System.currentTimeMillis() + intervalMillis;
         PendingIntent broadcastPendingIntent = getBroadcastPendingIntent(context);
         int rtcWakeup = AlarmManager.RTC_WAKEUP;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (AndroidVersionUtils.hasKitkat()) {
             alarmManager.setExact(rtcWakeup, triggerAtMillis, broadcastPendingIntent);
         } else {
             alarmManager.set(rtcWakeup, triggerAtMillis, broadcastPendingIntent);

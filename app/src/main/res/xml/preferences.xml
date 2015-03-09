@@ -19,22 +19,39 @@
         android:key="pref_category_settings"
         android:title="@string/pref_category_settings">
         <ListPreference
-            android:key="pref_gcm_heartbeat_interval_wifi"
-            android:title="@string/pref_gcm_heartbeat_interval_wifi_title"
+            android:defaultValue="@string/gcm_heartbeat_interval_default"
             android:dialogTitle="@string/pref_gcm_heartbeat_interval_wifi_title"
             android:entries="@array/gcm_heartbeat_intervals_wifi"
             android:entryValues="@array/gcm_heartbeat_interval_values_wifi"
+            android:key="pref_gcm_heartbeat_interval_wifi"
             android:persistent="true"
-            android:defaultValue="@string/gcm_heartbeat_interval_default"/>
+            android:title="@string/pref_gcm_heartbeat_interval_wifi_title" />
         <ListPreference
-            android:key="pref_gcm_heartbeat_interval_mobile"
-            android:title="@string/pref_gcm_heartbeat_interval_mobile_title"
+            android:defaultValue="@string/gcm_heartbeat_interval_default"
             android:dialogTitle="@string/pref_gcm_heartbeat_interval_mobile_title"
             android:entries="@array/gcm_heartbeat_intervals_mobile"
             android:entryValues="@array/gcm_heartbeat_interval_values_mobile"
+            android:key="pref_gcm_heartbeat_interval_mobile"
             android:persistent="true"
-            android:defaultValue="@string/gcm_heartbeat_interval_default"/>
+            android:title="@string/pref_gcm_heartbeat_interval_mobile_title" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="pref_category_mobo_dev"
+        android:title="@string/pref_category_mobodev">
+
+        <io.github.mobodev.heartbeatfixerforgcm.preference.DonatePreference
+            android:key="pref_donate"
+            android:persistent="false"/>
+        <io.github.mobodev.heartbeatfixerforgcm.preference.RecommendAppPreference
+            android:key="pref_recommend"
+            android:persistent="false"/>
+        <io.github.mobodev.heartbeatfixerforgcm.preference.ShareAppPreference
+            android:key="pref_share"
+            android:persistent="false"/>
+        <io.github.mobodev.heartbeatfixerforgcm.preference.FeedbackPreference
+            android:key="pref_feedback"
+            android:persistent="false"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>
