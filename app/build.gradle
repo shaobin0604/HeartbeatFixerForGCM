@@ -22,6 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'uk.co.chrisjenx:calligraphy:1.2.0'
+    compile 'org.solovyev.android:checkout:0.6.+@aar'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
         // exclusion is not neccessary, but generally a good idea.

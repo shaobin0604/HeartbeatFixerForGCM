@@ -23,4 +23,5 @@
     iosched:titleTextAppearance="@style/ActionBar.TitleText"
     iosched:contentInsetStart="?actionBarInsetStart"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize" />
+    android:layout_height="?actionBarSize"
+    android:paddingRight="16dp"/>

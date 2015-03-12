@@ -87,6 +87,7 @@
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="calligraphy-1.2.0" level="project" />
+    <orderEntry type="library" exported="" name="checkout-0.6.2" level="project" />
     <orderEntry type="library" exported="" name="crouton-1.8.5" level="project" />
   </component>
 </module>
