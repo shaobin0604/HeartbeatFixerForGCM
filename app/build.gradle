@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import org.apache.commons.codec.binary.Base64
+
 apply plugin: 'com.android.application'
 
 android {
@@ -6,15 +9,58 @@ android {
 
     defaultConfig {
         applicationId "io.github.mobodev.heartbeatfixerforgcm"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
+
+    //noinspection GroovyAssignabilityCheck
+    SimpleDateFormat timeStampFormat = new SimpleDateFormat(
+            "EEE MMMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH); // Don't change it!
+    String timeStamp = timeStampFormat.format(Calendar.getInstance().getTime());
+
+    String key = HEARTBEAT_FIXER_FOR_GCM_IAB_KEY
+    if (key == null) key = "this-is-a-debug-build-blank-key";
+    String keySalt = UUID.randomUUID().toString();
+    String keyEncrypted = encryptPublicKey(key, keySalt);
+
+    // Google Play key is very important and better to check it twice
+    // then to get a billion of Force Close reports.
+    println "- - - - - - - - - - - -"
+    println "\u001B[36m\u001B[1mGOOGLE_PLAY_PUBLIC_KEY\u001B[0m: " + key
+    println "- - - - - - - - - - - -"
+
+    signingConfigs {
         release {
-            minifyEnabled false
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "MY_DEBUG", "true"
+            buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + keyEncrypted + "\""
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""
+        }
+        release {
+            buildConfigField "boolean", "MY_DEBUG", "true"
+            buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + keyEncrypted + "\""
+            buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""
+
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", "-v" + defaultConfig.versionName + "-b" + defaultConfig.versionCode + ".apk"))
+                }
+            }
         }
     }
 }
@@ -22,10 +68,38 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'uk.co.chrisjenx:calligraphy:1.2.0'
+    compile 'me.grantland:autofittextview:0.2.+'
     compile 'org.solovyev.android:checkout:0.6.+@aar'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
         // exclusion is not neccessary, but generally a good idea.
         exclude group: 'com.google.android', module: 'support-v4'
     }
+}
+
+/**
+ * Protects the key from kids, script kiddies and dumbs.
+ *
+ * @param key the key to encrypt
+ * @return encrypted tkey
+ */
+// Symmetric algorithm used for ciphering/deciphering.
+def encryptPublicKey(String key, String salt) {
+    String encoded = encryptPublicKeyX(key, salt);
+    return Base64.encodeBase64URLSafeString(encoded.getBytes());
+}
+
+def encryptPublicKeyX(String key, String salt) {
+    final char[] m = key.toCharArray();
+    final char[] s = salt.toCharArray();
+
+    final int ml = m.length;
+    final int sl = s.length;
+    final char[] result = new char[ml];
+
+    for (int i = 0; i < ml; i++) {
+        result[i] = (char) (m[i] ^ s[i % sl]);
+    }
+
+    return new String(result);
 }

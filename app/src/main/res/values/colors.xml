@@ -71,4 +71,6 @@
 
     <color name="my_schedule_conflict">#db4437</color>
     <color name="material_dlg_negative_text_color">#FFAAAAAA</color>
+
+    <color name="donation_normal">#8BC34A</color>
 </resources>

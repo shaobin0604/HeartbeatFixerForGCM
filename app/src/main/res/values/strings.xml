@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="pref_category_settings">Settings</string>
-    <string name="pref_category_mobodev">Mobodev</string>
+    <string name="pref_category_mobodev">MoboDev</string>
     <string name="pref_gcm_heartbeat_interval_wifi_title">GCM heartbeat interval WiFi</string>
     <string name="pref_gcm_heartbeat_interval_mobile_title">GCM heartbeat interval Mobile</string>
 
@@ -16,16 +16,33 @@
     <string name="toast_play_store_unavailable">Google Play Store is not installed.</string>
 
     <string name="dlg_feedback_title">Feedback</string>
-    <string name="dlg_feedback_content"><![CDATA[1. Love "Heartbeat Fixer for GCM", please rate <b>5 star</b> in Play Store.<br/><br/>2. Have problems, please contact developer to report issue.]]></string>
+    <string name="dlg_feedback_content"><![CDATA[1. Love 「Heartbeat Fixer for GCM」 , please rate <b>5 star</b> in Play Store.<br/><br/>2. Have problems, please contact developer to report issue.]]></string>
     <string name="dlg_feedback_positive_text">Rate 5 Star</string>
     <string name="dlg_feedback_negative_text">Contact Author</string>
 
     <string name="pref_donate_title">Donate</string>
-    <string name="pref_donate_summary">This application is free and open source software without any banners/ads. But donations are welcome.</string>
+    <string name="pref_donate_summary">「Heartbeat Fixer for GCM」 is a free and open source software without any banners/ads. But donations are welcome.</string>
 
     <string name="send_to">Send to</string>
     <string name="pref_share_app_title">Share app</string>
     <string name="pref_share_app_description">Send app link to friends</string>
     <string name="pref_recommend_apps_title">Recommend apps</string>
     <string name="pref_recommend_apps_description">Awesome apps developed by me</string>
+
+    <!-- donate to developer dialog -->
+    <string name="donate_dialog_title">Donate to developer</string>
+    <string name="donate_dialog_message">「Heartbeat Fixer for GCM」 is a free and open source app. You can show your appreciation and support development by donating:</string>
+    <string name="donate_billing_not_supported">In-app purchases are not supported on the device.</string>
+    <string name="donate_thanks">Thank you very much!</string>
+    <!--
+    Simple words
+    -->
+
+    <string name="close">Close</string>
+    <string name="later">Later</string>
+    <string name="send">Send</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
 </resources>

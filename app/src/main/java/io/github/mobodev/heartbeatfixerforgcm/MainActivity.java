@@ -2,6 +2,7 @@ package io.github.mobodev.heartbeatfixerforgcm;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -13,12 +14,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 
+import org.solovyev.android.checkout.ActivityCheckout;
+import org.solovyev.android.checkout.Checkout;
+
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends ActionBarActivity implements CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends ActivityBase implements CompoundButton.OnCheckedChangeListener {
     private SwitchCompat mSwitch;
 
     @Override
@@ -28,17 +33,19 @@ public class MainActivity extends ActionBarActivity implements CompoundButton.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestCheckout();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar_actionbar));
 
         if (savedInstanceState == null) {
+            SettingsFragment fragment = new SettingsFragment();
+            fragment.setRetainInstance(false);
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new SettingsFragment())
+                    .add(R.id.container, fragment)
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
