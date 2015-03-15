@@ -38,6 +38,7 @@
     Simple words
     -->
 
+    <string name="purchased">(Purchased)</string>
     <string name="close">Close</string>
     <string name="later">Later</string>
     <string name="send">Send</string>

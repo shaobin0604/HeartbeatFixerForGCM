@@ -48,7 +48,7 @@ android {
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""
         }
         release {
-            buildConfigField "boolean", "MY_DEBUG", "true"
+            buildConfigField "boolean", "MY_DEBUG", "false"
             buildConfigField "String", "MY_TIME_STAMP", "\"" + timeStamp + "\""
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY", "\"" + keyEncrypted + "\""
             buildConfigField "String", "MY_GOOGLE_PLAY_PUBLIC_KEY_SALT", "\"" + keySalt + "\""

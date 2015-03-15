@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,10 +30,12 @@ import org.solovyev.android.checkout.ResponseCodes;
 import org.solovyev.android.checkout.Sku;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
+import io.github.mobodev.heartbeatfixerforgcm.billing.IabProducts;
 import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
 import io.github.mobodev.heartbeatfixerforgcm.ui.adapters.BetterArrayAdapter;
-import io.github.mobodev.heartbeatfixerforgcm.ui.widgets.HeaderGridView;
 import io.github.mobodev.heartbeatfixerforgcm.utils.ToastUtils;
 import io.github.mobodev.heartbeatfixerforgcm.utils.ViewUtils;
 
@@ -57,7 +60,7 @@ public class DonateDialogFragment extends DialogFragment {
     private final PurchaseListener mPurchaseListener = new PurchaseListener();
     private final InventoryLoadedListener mInventoryLoadedListener = new InventoryLoadedListener();
 
-    private SkusAdapter mAdapter;
+    private SkusListAdapter mAdapter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -85,29 +88,29 @@ public class DonateDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setIcon(R.drawable.ic_action_donate_white);
         builder.setTitle(R.string.donate_dialog_title);
 
         LayoutInflater inflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         FrameLayout frameLayout = new FrameLayout(getActivity()); //
 
-        View view = inflater.inflate(R.layout.dialog_donate, frameLayout, false);
+        View view = inflater.inflate(R.layout.dialog_donate_list, frameLayout, false);
+
+        ListView gv = (ListView) view.findViewById(R.id.list);
 
         // Init description message.
-        TextView textView = (TextView) inflater.inflate(R.layout.dialog_message, frameLayout, false);
+        TextView textView = (TextView) inflater.inflate(R.layout.dialog_message, gv, false);
         textView.setText(R.string.donate_dialog_message);
         textView.setPadding(0, textView.getPaddingTop(), 0, textView.getPaddingBottom() / 2);
 
         // Init view with error view and progressbar-s.
-        View phView = inflater.inflate(R.layout.dialog_donate_placeholder, frameLayout, false);
+        View phView = inflater.inflate(R.layout.dialog_donate_placeholder, gv, false);
         mProgressBar = (ProgressBar) phView.findViewById(R.id.progress);
         mEmptyView = (TextView) phView.findViewById(R.id.empty);
 
-        HeaderGridView gv = (HeaderGridView) view.findViewById(R.id.grid);
         gv.addHeaderView(textView, null, false);
         gv.addHeaderView(phView, null, false);
-        gv.setAdapter(mAdapter = new SkusAdapter(getActivity(), R.layout.sku));
+        gv.setAdapter(mAdapter = new SkusListAdapter(getActivity(), R.layout.sku_item));
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -222,6 +225,91 @@ public class DonateDialogFragment extends DialogFragment {
 
     }
 
+    private static class SkusListAdapter extends BetterArrayAdapter<SkuUi> {
+
+        private static final class ViewHolder extends BetterArrayAdapter.ViewHolder {
+
+            @NonNull
+            private final ImageView image;
+
+            @NonNull
+            private final TextView description;
+
+            @NonNull
+            private final TextView price;
+
+            @NonNull
+            private final TextView currency;
+
+            @NonNull
+            private final TextView done;
+
+            public ViewHolder(@NonNull View view) {
+                super(view);
+                image = (ImageView) view.findViewById(R.id.image);
+                description = (TextView) view.findViewById(R.id.description);
+                price = (TextView) view.findViewById(R.id.price);
+                currency = (TextView) view.findViewById(R.id.currency);
+                done = (TextView) view.findViewById(R.id.done);
+            }
+        }
+
+        private Map<String, Integer> mImageResIdMap;
+
+        public SkusListAdapter(@NonNull Context context, @LayoutRes int layoutRes) {
+            super(context, layoutRes);
+            initProductsImageResIdMap();
+        }
+
+        private void initProductsImageResIdMap() {
+            mImageResIdMap = new HashMap<String, Integer>(IabProducts.PRODUCT_LIST.size());
+            mImageResIdMap.put(IabProducts.PRODUCT_COFFEE, R.drawable.ic_coffee);
+            mImageResIdMap.put(IabProducts.PRODUCT_BEER, R.drawable.ic_beer);
+            mImageResIdMap.put(IabProducts.PRODUCT_HAMBURGER, R.drawable.ic_hamburger);
+            mImageResIdMap.put(IabProducts.PRODUCT_CAKE, R.drawable.ic_cake);
+        }
+
+        @NonNull
+        @Override
+        protected ViewHolder onCreateViewHolder(@NonNull View view) {
+            return new ViewHolder(view);
+        }
+
+        @Override
+        protected void onBindViewHolder(@NonNull BetterArrayAdapter.ViewHolder holder, int i) {
+            fill((ViewHolder) holder, getItem(i));
+        }
+
+        private void fill(@NonNull ViewHolder holder, @NonNull SkuUi skuUi) {
+            holder.description.setText(skuUi.getDescription());
+
+            int visibility;
+            if (skuUi.isPurchased()) {
+                visibility = View.GONE;
+                holder.done.setVisibility(View.VISIBLE);
+            } else {
+                visibility = View.VISIBLE;
+                holder.price.setText(skuUi.getPriceAmount());
+                holder.currency.setText(skuUi.getPriceCurrency());
+                holder.done.setVisibility(View.GONE);
+            }
+
+            holder.price.setVisibility(visibility);
+            holder.currency.setVisibility(visibility);
+
+            setImageResId(holder, skuUi.sku.id);
+        }
+
+        private void setImageResId(@NonNull ViewHolder holder, String productId) {
+            Integer drawableResId = mImageResIdMap.get(productId);
+            if (drawableResId == null) {
+                drawableResId = 0;
+            }
+            holder.image.setImageResource(drawableResId);
+        }
+
+    }
+
     private static class SkusAdapter extends BetterArrayAdapter<SkuUi> {
 
         private static final class ViewHolder extends BetterArrayAdapter.ViewHolder {
@@ -283,7 +371,6 @@ public class DonateDialogFragment extends DialogFragment {
             holder.price.setVisibility(visibility);
             holder.currency.setVisibility(visibility);
         }
-
     }
 
     private static class SkuUi {
