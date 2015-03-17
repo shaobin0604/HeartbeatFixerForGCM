@@ -19,8 +19,12 @@ android {
     SimpleDateFormat timeStampFormat = new SimpleDateFormat(
             "EEE MMMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH); // Don't change it!
     String timeStamp = timeStampFormat.format(Calendar.getInstance().getTime());
-
-    String key = HEARTBEAT_FIXER_FOR_GCM_IAB_KEY
+    String key = null
+    try {
+        key = HEARTBEAT_FIXER_FOR_GCM_IAB_KEY
+    } catch (Exception e) {
+        // ignore
+    }
     if (key == null) key = "this-is-a-debug-build-blank-key";
     String keySalt = UUID.randomUUID().toString();
     String keyEncrypted = encryptPublicKey(key, keySalt);
