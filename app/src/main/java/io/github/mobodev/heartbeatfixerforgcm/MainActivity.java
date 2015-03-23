@@ -1,5 +1,6 @@
 package io.github.mobodev.heartbeatfixerforgcm;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,9 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 
 import org.solovyev.android.checkout.ActivityCheckout;
@@ -20,6 +24,7 @@ import org.solovyev.android.checkout.Checkout;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
+import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -37,6 +42,7 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar_actionbar));
+        buildTranslucentStatusBar(findViewById(R.id.capture_insets_frame_layout));
 
         if (savedInstanceState == null) {
             SettingsFragment fragment = new SettingsFragment();
@@ -44,6 +50,38 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
             getFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)
                     .commit();
+        }
+    }
+
+    @TargetApi(android.os.Build.VERSION_CODES.LOLLIPOP)
+    protected void buildTranslucentStatusBar(View contentRoot) {
+        if (DeviceUtils.hasKitkat() && !DeviceUtils.hasLollipop()) {
+            setTranslucentStatusFlag(true);
+        }
+
+        if (DeviceUtils.hasKitkat()) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+
+        if (DeviceUtils.hasLollipop()) {
+            setTranslucentStatusFlag(false);
+            //getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+
+        contentRoot.setPadding(0, getResources().getDimensionPixelSize(R.dimen.tool_bar_top_padding), 0, 0);
+    }
+
+    private void setTranslucentStatusFlag(boolean on) {
+        if (DeviceUtils.hasKitkat()) {
+            Window win = getWindow();
+            WindowManager.LayoutParams winParams = win.getAttributes();
+            final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            if (on) {
+                winParams.flags |= bits;
+            } else {
+                winParams.flags &= ~bits;
+            }
+            win.setAttributes(winParams);
         }
     }
 
