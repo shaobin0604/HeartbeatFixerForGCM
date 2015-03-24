@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.mobodev.heartbeatfixerforgcm">
+    package="io.github.mobodev.heartbeatfixerforgcm"
+    android:installLocation="internalOnly">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
+
 
     <application
         android:name=".HeartbeatFixerForGcmApp"
@@ -22,11 +25,17 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".HeartbeatReceiver" android:exported="false"/>
+        <receiver
+            android:name=".HeartbeatReceiver"
+            android:exported="false" />
+
         <receiver android:name=".NetworkStateReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-                <category android:name="android.intent.category.default"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>

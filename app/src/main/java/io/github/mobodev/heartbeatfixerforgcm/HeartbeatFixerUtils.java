@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
+import android.util.Log;
 
 import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
 
@@ -17,6 +19,8 @@ import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
  * Created by shaobin on 3/8/15.
  */
 public class HeartbeatFixerUtils {
+    private static final String TAG = HeartbeatFixerForGcmApp.TAG;
+
     private static final String PREF_KEY_FIXER_STATE = "fixer_state";
     private static enum NetworkState { UNKNOWN, CONNECTED, DISCONNECTED, }
 
@@ -24,7 +28,8 @@ public class HeartbeatFixerUtils {
 
     private HeartbeatFixerUtils() {}
 
-    public static void scheduleHeartbeatRequest(Context context) {
+    public static void scheduleHeartbeatRequest(Context context, boolean fromNetworkStateChange) {
+        Log.d(TAG, "HeartbeatFixerUtils, scheduleHeartbeatRequest, fromNetworkStateChange: " + fromNetworkStateChange);
         if (!isHeartbeatFixerEnabled(context)) {
             cancelHeartbeatRequest(context);
             sNetworkState = NetworkState.UNKNOWN;
@@ -33,7 +38,7 @@ public class HeartbeatFixerUtils {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
-            if (sNetworkState != NetworkState.CONNECTED) {
+            if (!fromNetworkStateChange || sNetworkState != NetworkState.CONNECTED) {
                 sNetworkState = NetworkState.CONNECTED;
                 int intervalMillis;
                 if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
@@ -44,7 +49,7 @@ public class HeartbeatFixerUtils {
                 setNextHeartbeatRequest(context, intervalMillis);
             }
         } else {
-            if (sNetworkState != NetworkState.DISCONNECTED) {
+            if (!fromNetworkStateChange || sNetworkState != NetworkState.DISCONNECTED) {
                 sNetworkState = NetworkState.DISCONNECTED;
                 cancelHeartbeatRequest(context);
             }
@@ -55,6 +60,7 @@ public class HeartbeatFixerUtils {
     private static void setNextHeartbeatRequest(Context context, int intervalMillis) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         long triggerAtMillis = System.currentTimeMillis() + intervalMillis;
+        Log.d(TAG, "setNextHeartbeatRequest at: " + DateFormat.format("yyyy-MM-dd hh:mm:ss", triggerAtMillis));
         PendingIntent broadcastPendingIntent = getBroadcastPendingIntent(context);
         int rtcWakeup = AlarmManager.RTC_WAKEUP;
         if (DeviceUtils.hasKitkat()) {
@@ -65,6 +71,7 @@ public class HeartbeatFixerUtils {
     }
 
     private static void cancelHeartbeatRequest(Context context) {
+        Log.d(TAG, "cancelHeartbeatRequest");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(getBroadcastPendingIntent(context));
     }

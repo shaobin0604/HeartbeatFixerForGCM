@@ -3,7 +3,7 @@
 
 ## Heartbeat Fixer for GCM
 
-Have you ever experience **Push Notification Delay**, missing something important. Here are the tools for fixing GCM heartbeat interval issue.
+Have you ever experience **Push Notification Delay**, missing something important. Here is the tool for fixing GCM heartbeat interval issue.
 
 ### The Root Cause
 

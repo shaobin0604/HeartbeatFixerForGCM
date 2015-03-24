@@ -25,6 +25,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
 import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
+import io.github.mobodev.heartbeatfixerforgcm.utils.PackageUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -92,6 +93,7 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         MenuItem item = menu.findItem(R.id.action_switch);
         mSwitch = (SwitchCompat) item.getActionView();
         mSwitch.setOnCheckedChangeListener(this);
+        mSwitch.setChecked(HeartbeatFixerUtils.isHeartbeatFixerEnabled(this));
         return true;
     }
 
@@ -113,6 +115,7 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         HeartbeatFixerUtils.setHeartbeatFixerEnabled(this, isChecked);
+        PackageUtils.setComponentEnabledSetting(this, NetworkStateReceiver.class, isChecked);
         toastHeartbeatFixerState(isChecked);
     }
 

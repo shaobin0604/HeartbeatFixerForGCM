@@ -12,9 +12,12 @@ import android.util.Log;
 public class NetworkStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent != null && ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
-            Log.d(HeartbeatFixerForGcmApp.TAG, "NetworkStateReceiver, intent: " + intent);
-            HeartbeatFixerUtils.scheduleHeartbeatRequest(context);
+        if (intent == null) return;
+        Log.d(HeartbeatFixerForGcmApp.TAG, "NetworkStateReceiver, intent: " + intent);
+        if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
+            HeartbeatFixerUtils.scheduleHeartbeatRequest(context, true);
+        } else if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            HeartbeatFixerUtils.scheduleHeartbeatRequest(context, false);
         }
     }
 }

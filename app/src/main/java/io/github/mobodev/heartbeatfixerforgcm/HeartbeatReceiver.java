@@ -18,6 +18,6 @@ public class HeartbeatReceiver extends BroadcastReceiver {
         context.sendBroadcast(GTALK_HEART_BEAT_INTENT);
         context.sendBroadcast(MCS_MCS_HEARTBEAT_INTENT);
         Log.d(TAG, "HeartbeatReceiver sent heartbeat request");
-        HeartbeatFixerUtils.scheduleHeartbeatRequest(context);
+        HeartbeatFixerUtils.scheduleHeartbeatRequest(context, false);
     }
 }
