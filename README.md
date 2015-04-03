@@ -13,7 +13,12 @@ The **root** cause of this issue can be found at [Push notifications delayed, He
 
 It sends an heartbeat every x minutes, where you can choose the interval. Setting it to 5 minutes will keep alive the GCM connection used for push notifications.
 
+### Build 
 
+  ./gradlew assembleDebug
 
+### Screenshots
 
+<img src="snapshot/device-2015-03-24-231244.png" width="300px"/>
+<img src="snapshot/device-2015-03-24-231306.png" width="300px"/>
 
