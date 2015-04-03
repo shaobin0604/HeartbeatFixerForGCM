@@ -1,8 +1,6 @@
 
 [![Build Status](https://travis-ci.org/shaobin0604/HeartbeatFixerForGCM.svg)](https://travis-ci.org/shaobin0604/HeartbeatFixerForGCM)
 
-[![HeartbeatFixerForGCM](snapshot/feature-graphic.png)][1]
-
 [![Get it on Google Play][2]][1]
 
 ## Heartbeat Fixer for GCM
