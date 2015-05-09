@@ -25,7 +25,10 @@ public class HeartbeatFixerForGcmApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CalligraphyConfig.initDefault("fonts/GothamRnd-Book.otf", R.attr.fontPath);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/GothamRnd-Book.otf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build());
         mCheckoutInternal = new CheckoutInternal(this, Products.create().add(ProductTypes.IN_APP,
                 IabProducts.PRODUCT_LIST));
     }

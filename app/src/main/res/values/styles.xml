@@ -8,7 +8,7 @@
     <!-- Root styles that vary by API level -->
     <!-- Disable RTL support on older devices -->
     <!-- Prevents crash on certain devices to namespace conflict -->
-    <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light" />
+    <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
     <style name="FrameworkRoot.Widget" parent="Theme.AppCompat" />
 
     <!-- Immediate parent theme to specify base values for custom attributes -->

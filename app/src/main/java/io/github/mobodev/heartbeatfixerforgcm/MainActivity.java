@@ -3,12 +3,10 @@ package io.github.mobodev.heartbeatfixerforgcm;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,9 +15,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
-
-import org.solovyev.android.checkout.ActivityCheckout;
-import org.solovyev.android.checkout.Checkout;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -34,7 +29,7 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -156,10 +151,10 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (PREF_GCM_HEARTBEAT_INTERVAL_WIFI.equals(key)) {
                 updateIntervalSummaryWifi();
-                sendHearbeatRequestIfAllows();
+                sendHeartbeatRequestIfAllows();
             } else if (PREF_GCM_HEARTBEAT_INTERVAL_MOBILE.equals(key)) {
                 updateIntervalSummaryMobile();
-                sendHearbeatRequestIfAllows();
+                sendHeartbeatRequestIfAllows();
             }
         }
 
@@ -171,7 +166,7 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
             mIntervalMobile.setSummary(mIntervalMobile.getEntry());
         }
 
-        private void sendHearbeatRequestIfAllows() {
+        private void sendHeartbeatRequestIfAllows() {
             Activity activity = getActivity();
             if (HeartbeatFixerUtils.isHeartbeatFixerEnabled(activity)) {
                 HeartbeatFixerUtils.sendHeartbeatRequest(activity);
