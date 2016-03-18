@@ -19,6 +19,10 @@ It sends an heartbeat every x minutes, where you can choose the interval. Settin
 
     ./gradlew assembleDebug
 
+## Install
+
+   ./gradlew instDebug
+
 ### Screenshots
 
 <img src="snapshot/device-2015-03-24-231244.png" width="300px"/>
