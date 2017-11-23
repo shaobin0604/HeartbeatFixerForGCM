@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
@@ -21,10 +22,12 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
 import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
 import io.github.mobodev.heartbeatfixerforgcm.utils.PackageUtils;
+import io.github.mobodev.heartbeatfixerforgcm.utils.PlayStoreUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends ActivityBase implements CompoundButton.OnCheckedChangeListener {
+    public static final String TAG = "MainActivity";
     private SwitchCompat mSwitch;
 
     @Override
@@ -38,7 +41,13 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar_actionbar));
-        buildTranslucentStatusBar(findViewById(R.id.capture_insets_frame_layout));
+
+        findViewById(R.id.ll_ad).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlayStoreUtils.launchAppDetailPage(MainActivity.this, "com.insgot.ins", false);
+            }
+        });
 
         if (savedInstanceState == null) {
             SettingsFragment fragment = new SettingsFragment();
@@ -47,6 +56,10 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
                     .add(R.id.container, fragment)
                     .commit();
         }
+    }
+
+    protected ViewGroup getRootViewGroup() {
+        return (ViewGroup) findViewById(R.id.root_view);
     }
 
     @TargetApi(android.os.Build.VERSION_CODES.LOLLIPOP)

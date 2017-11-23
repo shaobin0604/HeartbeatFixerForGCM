@@ -3,7 +3,7 @@ package io.github.mobodev.heartbeatfixerforgcm.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import org.solovyev.android.checkout.ActivityCheckout;
 import org.solovyev.android.checkout.Checkout;
@@ -16,7 +16,7 @@ import io.github.mobodev.heartbeatfixerforgcm.tests.Check;
 /**
  * Created by Artem Chepurnoy on 28.12.2014.
  */
-public class ActivityBase extends ActionBarActivity {
+public class ActivityBase extends AppCompatActivity {
     protected ActivityCheckout mCheckout;
 
     private boolean mCheckoutRequest;

@@ -2,7 +2,7 @@ package io.github.mobodev.heartbeatfixerforgcm.preference;
 
 import android.content.Context;
 import android.preference.Preference;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 
 import io.github.mobodev.heartbeatfixerforgcm.DialogHelper;
@@ -35,6 +35,6 @@ public class DonatePreference extends Preference {
 
     @Override
     protected void onClick() {
-        DialogHelper.showDonateDialog((ActionBarActivity)getContext());
+        DialogHelper.showDonateDialog((AppCompatActivity)getContext());
     }
 }

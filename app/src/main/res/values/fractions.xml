@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <fraction name="aspect_ratio_3_2">150%</fraction>
+    <fraction name="aspect_ratio_720_158">456%</fraction>
+</resources>

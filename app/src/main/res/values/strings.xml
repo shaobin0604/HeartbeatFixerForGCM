@@ -46,4 +46,6 @@
     <string name="off">Off</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
+    <string name="admob_banner_unit_id">ca-app-pub-5964196502067291/5460955376</string>
+    <string name="admob_app_id">ca-app-pub-5964196502067291~1489720161</string>
 </resources>

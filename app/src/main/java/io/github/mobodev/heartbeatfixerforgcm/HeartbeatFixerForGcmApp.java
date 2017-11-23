@@ -2,13 +2,8 @@ package io.github.mobodev.heartbeatfixerforgcm;
 
 import android.app.Application;
 
-import org.solovyev.android.checkout.Billing;
-import org.solovyev.android.checkout.Checkout;
 import org.solovyev.android.checkout.ProductTypes;
 import org.solovyev.android.checkout.Products;
-
-import java.util.Arrays;
-import java.util.List;
 
 import io.github.mobodev.heartbeatfixerforgcm.billing.CheckoutInternal;
 import io.github.mobodev.heartbeatfixerforgcm.billing.IabProducts;

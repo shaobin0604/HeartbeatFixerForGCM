@@ -14,4 +14,10 @@
     <declare-styleable name="ScrimInsetsView">
         <attr name="insetForeground" format="reference|color" />
     </declare-styleable>
+
+    <declare-styleable name="AspectRatioImageView">
+        <attr name="aspectRatio" />
+    </declare-styleable>
+
+    <attr name="aspectRatio" format="float" />
 </resources>

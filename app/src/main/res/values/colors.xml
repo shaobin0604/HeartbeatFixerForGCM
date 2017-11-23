@@ -73,4 +73,6 @@
     <color name="material_dlg_negative_text_color">#FFAAAAAA</color>
 
     <color name="donation_normal">#8BC34A</color>
+
+    <color name="blue_a200">#448aff</color>
 </resources>

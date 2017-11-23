@@ -6,7 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by shaobin on 3/14/15.
@@ -14,21 +14,23 @@ import android.support.v7.app.ActionBarActivity;
 public class DialogHelper {
     public static final String TAG_FRAGMENT_DONATION = "dialog_donate";
 
-    public static void showDonateDialog(@NonNull ActionBarActivity activity) {
+    public static void showDonateDialog(@NonNull AppCompatActivity activity) {
         showDialog(activity, DonateDialogFragment.class, TAG_FRAGMENT_DONATION);
     }
 
-    private static void showDialog(@NonNull ActionBarActivity activity,
+    private static void showDialog(@NonNull AppCompatActivity activity,
                                    @NonNull Class clazz,
                                    @NonNull String tag) {
         try {
             showDialog(activity, (DialogFragment) clazz.newInstance(), tag);
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void showDialog(@NonNull ActionBarActivity activity,
+    private static void showDialog(@NonNull AppCompatActivity activity,
                                    @NonNull DialogFragment fragment,
                                    @NonNull String tag) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
