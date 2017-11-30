@@ -11,8 +11,8 @@ android {
         applicationId "io.github.mobodev.heartbeatfixerforgcm"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 20181124
-        versionName "1.1"
+        versionCode 20181130
+        versionName "1.2"
     }
 
     //noinspection GroovyAssignabilityCheck
@@ -90,6 +90,7 @@ dependencies {
         // exclusion is not necessary, but generally a good idea.
         exclude group: 'com.google.android', module: 'support-v4'
     }
+    compile 'com.jonathanfinerty.once:once:1.2.2'
 }
 
 /**

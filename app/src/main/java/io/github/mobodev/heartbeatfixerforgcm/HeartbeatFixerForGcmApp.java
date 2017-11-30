@@ -7,6 +7,7 @@ import org.solovyev.android.checkout.Products;
 
 import io.github.mobodev.heartbeatfixerforgcm.billing.CheckoutInternal;
 import io.github.mobodev.heartbeatfixerforgcm.billing.IabProducts;
+import jonathanfinerty.once.Once;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -26,6 +27,7 @@ public class HeartbeatFixerForGcmApp extends Application {
                         .build());
         mCheckoutInternal = new CheckoutInternal(this, Products.create().add(ProductTypes.IN_APP,
                 IabProducts.PRODUCT_LIST));
+        Once.initialise(this);
     }
 
     public CheckoutInternal getCheckoutInternal() {

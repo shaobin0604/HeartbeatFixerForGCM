@@ -23,11 +23,13 @@ import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
 import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
 import io.github.mobodev.heartbeatfixerforgcm.utils.PackageUtils;
 import io.github.mobodev.heartbeatfixerforgcm.utils.PlayStoreUtils;
+import jonathanfinerty.once.Once;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends ActivityBase implements CompoundButton.OnCheckedChangeListener {
     public static final String TAG = "MainActivity";
+    public static final String ONCE_TAG_CLICK_AD = "click_ad";
     private SwitchCompat mSwitch;
 
     @Override
@@ -42,12 +44,18 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar_actionbar));
 
-        findViewById(R.id.ll_ad).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlayStoreUtils.launchAppDetailPage(MainActivity.this, "com.insgot.ins", false);
-            }
-        });
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, ONCE_TAG_CLICK_AD)) {
+            final View adView = findViewById(R.id.ll_ad);
+            adView.setVisibility(View.VISIBLE);
+            adView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setVisibility(View.GONE);
+                    Once.markDone(ONCE_TAG_CLICK_AD);
+                    PlayStoreUtils.launchAppDetailPage(MainActivity.this, "com.insgot.ins", false);
+                }
+            });
+        }
 
         if (savedInstanceState == null) {
             SettingsFragment fragment = new SettingsFragment();

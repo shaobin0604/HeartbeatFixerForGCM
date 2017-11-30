@@ -22,18 +22,17 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Insgot for Instagram"/>
+            android:text="@string/ad_title"/>
 
         <TextView
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save repost Ins Photos&amp;Videos"/>
+            android:text="@string/ad_content"/>
     </LinearLayout>
 
     <TextView
         style="@style/TextAppearance.AppCompat.Button"
-        android:textColor="@color/blue_a200"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/keyline_1_minus_8dp"
@@ -42,6 +41,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="4dp"
-        android:text="install"
-        android:textAllCaps="true"/>
+        android:textStyle="bold"
+        android:textColor="@color/body_text_1_inverse"
+        android:text="@string/btn_install"/>
 </LinearLayout>

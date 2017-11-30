@@ -36,5 +36,6 @@
         android:layout_height="1px"
         android:background="@color/list_dropdown_divider_color"/>
 
-    <include layout="@layout/partial_ad_insgot" android:id="@+id/ll_ad"/>
+    <include layout="@layout/partial_ad_insgot" android:id="@+id/ll_ad"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -48,4 +48,7 @@
     <string name="disabled">Disabled</string>
     <string name="admob_banner_unit_id">ca-app-pub-5964196502067291/5460955376</string>
     <string name="admob_app_id">ca-app-pub-5964196502067291~1489720161</string>
+    <string name="ad_content"><![CDATA[Save, repost Photos&Videos]]></string>
+    <string name="ad_title">Insgot for Instagram</string>
+    <string name="btn_install">install</string>
 </resources>
