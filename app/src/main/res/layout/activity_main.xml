@@ -31,11 +31,4 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/list_dropdown_divider_color"/>
-
-    <include layout="@layout/partial_ad_insgot" android:id="@+id/ll_ad"
-        android:visibility="gone"/>
 </LinearLayout>

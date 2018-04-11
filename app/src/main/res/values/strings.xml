@@ -20,8 +20,8 @@
     <string name="dlg_feedback_positive_text">Rate 5 Star</string>
     <string name="dlg_feedback_negative_text">Contact Author</string>
 
-    <string name="pref_donate_title">Donate</string>
-    <string name="pref_donate_summary">「Heartbeat Fixer for GCM」 is a free and open source software without any banners/ads. But donations are welcome.</string>
+    <string name="pref_donate_title">Remove Banner Ad</string>
+    <string name="pref_donate_summary">「Heartbeat Fixer for GCM」 is a free software. Make a donation to remove banner ad</string>
 
     <string name="send_to">Send to</string>
     <string name="pref_share_app_title">Share app</string>

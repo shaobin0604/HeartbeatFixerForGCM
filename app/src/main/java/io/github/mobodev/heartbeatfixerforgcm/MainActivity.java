@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,20 +19,32 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
+import org.solovyev.android.checkout.Inventory;
+import org.solovyev.android.checkout.ProductTypes;
+
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import io.github.mobodev.heartbeatfixerforgcm.billing.IabProducts;
 import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
 import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
 import io.github.mobodev.heartbeatfixerforgcm.utils.PackageUtils;
-import io.github.mobodev.heartbeatfixerforgcm.utils.PlayStoreUtils;
-import jonathanfinerty.once.Once;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends ActivityBase implements CompoundButton.OnCheckedChangeListener {
     public static final String TAG = "MainActivity";
     public static final String ONCE_TAG_CLICK_AD = "click_ad";
+    private final InventoryLoadedListener mInventoryLoadedListener = new InventoryLoadedListener();
     private SwitchCompat mSwitch;
+    private Inventory mInventory;
+    private boolean mShowAd;
+    private AdView mAdView;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -44,19 +58,6 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar_actionbar));
 
-        if (!Once.beenDone(Once.THIS_APP_INSTALL, ONCE_TAG_CLICK_AD)) {
-            final View adView = findViewById(R.id.ll_ad);
-            adView.setVisibility(View.VISIBLE);
-            adView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.setVisibility(View.GONE);
-                    Once.markDone(ONCE_TAG_CLICK_AD);
-                    PlayStoreUtils.launchAppDetailPage(MainActivity.this, "com.insgot.ins", false);
-                }
-            });
-        }
-
         if (savedInstanceState == null) {
             SettingsFragment fragment = new SettingsFragment();
             fragment.setRetainInstance(false);
@@ -64,6 +65,16 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
                     .add(R.id.container, fragment)
                     .commit();
         }
+
+        mInventory = mCheckout.loadInventory();
+
+        MobileAds.initialize(this, "ca-app-pub-5964196502067291~1489720161");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mInventory.load().whenLoaded(mInventoryLoadedListener);
     }
 
     protected ViewGroup getRootViewGroup() {
@@ -77,7 +88,8 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         }
 
         if (DeviceUtils.hasKitkat()) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
         if (DeviceUtils.hasLollipop()) {
@@ -140,7 +152,66 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         Crouton.makeText(MainActivity.this, msgResId, Style.INFO, R.id.container).show();
     }
 
-    public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private void showAd() {
+        Log.v(TAG, "showAd");
+        if (!mShowAd) {
+            mShowAd = true;
+            mAdView = new AdView(this);
+            mAdView.setAdSize(AdSize.SMART_BANNER);
+            mAdView.setAdUnitId("ca-app-pub-5964196502067291/5460955376");
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    Log.v(TAG, "onAdClosed");
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    Log.v(TAG, "onAdFailedToLoad, errorCode: " + errorCode);
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    Log.v(TAG, "onAdLeftApplication");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    Log.v(TAG, "onAdOpened");
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    Log.v(TAG, "onAdLoaded");
+                }
+
+                @Override
+                public void onAdClicked() {
+                    Log.v(TAG, "onAdClicked");
+                }
+
+                @Override
+                public void onAdImpression() {
+                    Log.v(TAG, "onAdImpression");
+                }
+            });
+            getRootViewGroup().addView(mAdView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mAdView.loadAd(new AdRequest.Builder().build());
+        }
+    }
+
+    private void hideAd() {
+        Log.v(TAG, "hideAd");
+        if (mShowAd) {
+            mShowAd = false;
+            if (mAdView != null) {
+                getRootViewGroup().removeView(mAdView);
+            }
+        }
+    }
+
+    public static class SettingsFragment extends PreferenceFragment implements
+            SharedPreferences.OnSharedPreferenceChangeListener {
         public static final String PREF_GCM_HEARTBEAT_INTERVAL_WIFI = "pref_gcm_heartbeat_interval_wifi";
         public static final String PREF_GCM_HEARTBEAT_INTERVAL_MOBILE = "pref_gcm_heartbeat_interval_mobile";
         private ListPreference mIntervalWifi;
@@ -193,5 +264,34 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
                 HeartbeatFixerUtils.sendHeartbeatRequest(activity);
             }
         }
+    }
+
+    private class InventoryLoadedListener implements Inventory.Listener {
+
+        @Override
+        public void onLoaded(@NonNull Inventory.Products products) {
+            final Inventory.Product product = products.get(ProductTypes.IN_APP);
+
+            if (isPurchased(product)) {
+                hideAd();
+            } else {
+                showAd();
+            }
+        }
+
+        private boolean isPurchased(Inventory.Product product) {
+            if (!product.supported) {
+                return false;
+            }
+
+            for (String sku : IabProducts.PRODUCT_LIST) {
+                if (product.isPurchased(sku)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }
