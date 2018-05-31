@@ -11,7 +11,4 @@ public class Advertisement {
     public String bigPictureUrl;
     public String landingPageUrl;
     public int version;
-    public int maxShowCount;
-
-
 }

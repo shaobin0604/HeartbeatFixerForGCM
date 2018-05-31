@@ -30,6 +30,7 @@ import org.solovyev.android.checkout.ProductTypes;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import io.github.mobodev.heartbeatfixerforgcm.ad.AdvertisementManager;
 import io.github.mobodev.heartbeatfixerforgcm.billing.IabProducts;
 import io.github.mobodev.heartbeatfixerforgcm.ui.activities.ActivityBase;
 import io.github.mobodev.heartbeatfixerforgcm.utils.DeviceUtils;
@@ -69,6 +70,8 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         mInventory = mCheckout.loadInventory();
 
         MobileAds.initialize(this, "ca-app-pub-5964196502067291~1489720161");
+
+        AdvertisementManager.getInstance(this).showAdIfNeeded();
     }
 
     @Override
