@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "845362306740",
+    "firebase_url": "https://heartbeat-fixer-for-gcm.firebaseio.com",
+    "project_id": "heartbeat-fixer-for-gcm",
+    "storage_bucket": "heartbeat-fixer-for-gcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845362306740:android:7412832ed403840a",
+        "android_client_info": {
+          "package_name": "io.github.mobodev.heartbeatfixerforgcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845362306740-c9bjmuvom1oi190t3iu4re6dunp7u4sj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.mobodev.heartbeatfixerforgcm",
+            "certificate_hash": "2c3d248e10cf18c88f390200682a17fab0383681"
+          }
+        },
+        {
+          "client_id": "845362306740-r5pqk1lo0hbemv8c46c44o0jhntdn0jr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Oyvmaq9SPFNbCmuZR9PWeRaOKxVUnC8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845362306740-r5pqk1lo0hbemv8c46c44o0jhntdn0jr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
