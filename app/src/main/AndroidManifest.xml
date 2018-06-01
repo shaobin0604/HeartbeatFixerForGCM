@@ -3,6 +3,8 @@
           package="io.github.mobodev.heartbeatfixerforgcm"
           android:installLocation="internalOnly">
 
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -39,6 +41,10 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".ad.AnalyticsReceiver"
+            android:exported="false"/>
+
         <!-- [START firebase_service] -->
         <service android:name=".messaging.MyFirebaseMessagingService">
             <intent-filter>
@@ -59,12 +65,12 @@
              See README(https://goo.gl/l4GJaQ) for more. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
+            android:resource="@drawable/ic_notification"/>
         <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/theme_accent_3" />
+            android:resource="@color/theme_accent_3"/>
         <!-- [END fcm_default_icon] -->
         <!-- [START fcm_default_channel] -->
         <meta-data

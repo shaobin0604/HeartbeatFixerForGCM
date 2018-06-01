@@ -70,8 +70,6 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
         mInventory = mCheckout.loadInventory();
 
         MobileAds.initialize(this, "ca-app-pub-5964196502067291~1489720161");
-
-        AdvertisementManager.getInstance(this).showAdIfNeeded();
     }
 
     @Override
@@ -279,6 +277,7 @@ public class MainActivity extends ActivityBase implements CompoundButton.OnCheck
                 hideAd();
             } else {
                 showAd();
+                AdvertisementManager.getInstance(MainActivity.this).showAdIfNeeded();
             }
         }
 

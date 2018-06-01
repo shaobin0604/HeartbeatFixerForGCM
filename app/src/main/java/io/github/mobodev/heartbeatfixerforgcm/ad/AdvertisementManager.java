@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.connector.AnalyticsConnector;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.gson.Gson;
 
@@ -39,6 +41,7 @@ public class AdvertisementManager {
     private int mLocalAdVersion;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private Gson mGson;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private AdvertisementManager(@NonNull Context context) {
         mContext = context.getApplicationContext();
@@ -47,6 +50,7 @@ public class AdvertisementManager {
         mLocalAdVersion = mPreferences.getInt("version", 0);
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         mGson = new Gson();
     }
 
@@ -130,6 +134,14 @@ public class AdvertisementManager {
                 }
 
 
+                final Intent clickIntent = new Intent(AnalyticsReceiver.ACTION_CLICK);
+                clickIntent.setClass(mContext, AnalyticsReceiver.class);
+                clickIntent.putExtra("ad", advertisement);
+
+                final Intent deleteIntent = new Intent(AnalyticsReceiver.ACTION_DELETE);
+                deleteIntent.setClass(mContext, AnalyticsReceiver.class);
+                deleteIntent.putExtra("ad", advertisement);
+
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setAutoCancel(true)
@@ -139,10 +151,17 @@ public class AdvertisementManager {
                         .setLargeIcon(avatar)
                         .setStyle(new NotificationCompat.BigPictureStyle()
                                 .bigPicture(picture))
-                        .setContentIntent(PendingIntent.getActivity(mContext, 0, new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(advertisement.landingPageUrl)),
-                                PendingIntent.FLAG_UPDATE_CURRENT));
+                        .setContentIntent(
+                                PendingIntent.getBroadcast(mContext, 0, clickIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT))
+                        .setDeleteIntent(
+                                PendingIntent.getBroadcast(mContext, 0, deleteIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT));
                 NotificationManagerCompat.from(mContext).notify(0, builder.build());
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("version", advertisement.version);
+                FirebaseAnalytics.getInstance(mContext).logEvent("push_ad_show", bundle);
 
                 mLocalAdVersion = advertisement.version;
                 mPreferences.edit().putInt("version", mLocalAdVersion).apply();
