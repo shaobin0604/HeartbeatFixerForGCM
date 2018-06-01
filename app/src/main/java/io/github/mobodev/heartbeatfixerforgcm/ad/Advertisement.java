@@ -2,11 +2,13 @@ package io.github.mobodev.heartbeatfixerforgcm.ad;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 /**
  * Created by bshao on 5/13/18.
  */
 
+@Keep
 public class Advertisement implements Parcelable {
     public String title;
     public String message;

@@ -41,7 +41,7 @@ public class AdvertisementManager {
     private int mLocalAdVersion;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private Gson mGson;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    private boolean mShowedInSession;
 
     private AdvertisementManager(@NonNull Context context) {
         mContext = context.getApplicationContext();
@@ -50,7 +50,6 @@ public class AdvertisementManager {
         mLocalAdVersion = mPreferences.getInt("version", 0);
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         mGson = new Gson();
     }
 
@@ -63,7 +62,7 @@ public class AdvertisementManager {
 
     public void showAdIfNeeded() {
         final Advertisement remoteAdvertisement = getRemoteAdvertisement();
-        if (remoteAdvertisement.version > mLocalAdVersion) {
+        if (remoteAdvertisement.version > mLocalAdVersion && !mShowedInSession) {
             showAd(remoteAdvertisement);
         }
     }
@@ -165,6 +164,7 @@ public class AdvertisementManager {
 
                 mLocalAdVersion = advertisement.version;
                 mPreferences.edit().putInt("version", mLocalAdVersion).apply();
+                mShowedInSession = true;
             }
         });
     }
