@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId "io.github.mobodev.heartbeatfixerforgcm"
         minSdkVersion 14
-        targetSdkVersion 22
-        versionCode 201810500
-        versionName "1.5"
+        targetSdkVersion 26
+        versionCode 201810600
+        versionName "1.6"
     }
 
     //noinspection GroovyAssignabilityCheck
@@ -107,7 +107,7 @@ dependencies {
  * Protects the key from kids, script kiddies and dumbs.
  *
  * @param key the key to encrypt
- * @return encrypted tkey
+ * @return encrypted key
  */
 // Symmetric algorithm used for ciphering/deciphering.
 def encryptPublicKey(String key, String salt) {

@@ -3,22 +3,30 @@ android:
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
-    # - platform-tools
-    # - tools
+    - tools
+    - platform-tools
+    - tools
 
     # The BuildTools version used by your project
-    - build-tools-21.1.2
+    - build-tools-26.0.3
 
     # The SDK version used to compile your project
-    - android-19
+    - android-26
 
     # Additional components
     - extra-android-m2repository
-
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-26
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
     # - sys-img-armeabi-v7a-android-19
     # - sys-img-x86-android-17
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+
 
 before_install:
 
